@@ -1,40 +1,34 @@
 package com.plurasight;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.ZonedDateTime;
-import java.time.ZoneId;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class FormatDates {
     public static void main(String[] args) {
-
-        //get the date and time and date&&time togather
-        LocalDateTime timeDate= LocalDateTime.now();
-        LocalTime time = LocalTime.now();
         LocalDate today = LocalDate.now();
 
-        //Get the zone by the ZoneId method
+        // Get GMT and New York time.
         ZonedDateTime zone = ZonedDateTime.now(ZoneId.of("GMT"));
-        ZonedDateTime nyZoned = ZonedDateTime.now(ZoneId.of("America/New_York"));
+        ZonedDateTime nyZoned = zone.withZoneSameInstant(ZoneId.of("America/New_York"));
 
-        //The date formater I put all the date formater in one string and devide it
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy|yyyy-MM-dd|E,MMM dd, yyyy x z");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        System.out.println(today.format(format));
 
-        //printing time and zoned in that format
-        String dateTime = zone.format(format);
-        String[] dateTimeInArray = dateTime.split("\\|");
-        System.out.println(dateTimeInArray[0]);
-        System.out.println(dateTimeInArray[1]);
-        System.out.println(dateTimeInArray[2]);
+        format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        System.out.println(today.format(format));
 
+        format = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.US);
+        System.out.println(today.format(format));
+
+        format = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy HH:mm", Locale.US);
+        System.out.println(zone.format(format));
+
+        // Optional challenge: display the time in New York.
         System.out.println();
-
-        format = DateTimeFormatter.ofPattern("hh:mm dd-MMM-yyyy z");
+        format = DateTimeFormatter.ofPattern("H:mm 'on' dd-MMM-yyyy", Locale.US);
         System.out.println(nyZoned.format(format));
-
-
-
     }
 }
